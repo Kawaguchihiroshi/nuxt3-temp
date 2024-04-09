@@ -10,9 +10,9 @@ withDefaults(
     formatter?: (v: number) => string
   }>(),
   {
-    iconClass: '',
+    iconClass: "",
     value: null,
-    unit: '',
+    unit: "",
     formatter: (v: number) => v.toString(),
   },
 )
@@ -37,7 +37,7 @@ withDefaults(
         class="font-weight-regular d-inline-block ml-2"
         style="font-size: 18px"
       >
-        {{ value != null ? formatter(value) : '' }}
+        {{ value != null ? formatter(value) : "" }}
         <small v-if="unit">{{ unit }}</small>
       </h3>
       <v-divider />

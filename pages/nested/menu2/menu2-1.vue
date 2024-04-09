@@ -49,7 +49,7 @@ const state = ref({
   password: "",
 })
 
-import { formatDate, useRefHistory, useStorage } from "@vueuse/core"
+import { formatDate, useRefHistory } from "@vueuse/core"
 
 function format(ts: number) {
   return formatDate(new Date(ts), "YYYY-MM-DD HH:mm:ss")
@@ -79,30 +79,6 @@ const passwordRules = [
 ]
 
 const form = ref(null)
-
-// ナビゲーションガード
-const isModalOpen = ref(false)
-
-onBeforeRouteLeave((to, from, next) => {
-  const answer = window.confirm("ページを移動しますか？")
-  if (answer) {
-    next() // ページを移動する
-  } else {
-    next(false) // ページ移動をキャンセルする
-  }
-})
-
-// onBeforeRouteLeave((to, from, next) => {
-//   isModalOpen.value = true
-//   const closeModal = () => {
-//     next(false) // ページ移動をキャンセルする
-//     isModalOpen.value = false
-//   }
-//   const confirmMove = () => {
-//     isModalOpen.value = false
-//     next() // ページを移動する
-//   }
-// })
 </script>
 <template>
   <v-container fluid>
@@ -159,13 +135,6 @@ onBeforeRouteLeave((to, from, next) => {
         </v-col>
       </v-row>
     </v-card>
-    <div v-if="isModalOpen" class="modal">
-      <v-card class="modal-content">
-        <p>ページを移動しますか？</p>
-        <v-btn @click="closeModal">キャンセル</v-btn>
-        <v-btn @click="confirmMove">移動する</v-btn>
-      </v-card>
-    </div>
   </v-container>
 </template>
 
