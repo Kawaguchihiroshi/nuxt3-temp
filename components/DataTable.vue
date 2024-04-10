@@ -1,6 +1,6 @@
 <script setup lang="ts">
-// import DialogConfirm from "@/components/DialogConfirm.vue"
 import type { DataTableHeaders } from "@/plugins/vuetify"
+import type { DialogConfirm } from "@/components/DialogConfirm.vue"
 
 interface DessertsData {
   case_id: string
@@ -23,25 +23,6 @@ const { data: desserts } = await useFetch<{
 
 const search = ref("")
 
-// const dialogDelete = ref<InstanceType<typeof DialogConfirm> | null>(null)
-// function showDialogDelete(name: string) {
-//   dialogDelete.value
-//     ?.open("この案件情報を削除してもよろしいですか?")
-//     .then(async (confirmed: boolean) => {
-//       if (confirmed) {
-//         try {
-//           const index = desserts.value!.data.findIndex(
-//             (v: any) => v.name === name,
-//           )
-//           desserts.value!.data.splice(index, 1)
-//           Notify.success("削除しました")
-//         } catch (e) {
-//           Notify.error(e)
-//         }
-//       }
-//     })
-// }
-
 const headers: DataTableHeaders = [
   { title: "チェック", key: "case_name", sortable: false },
   { title: "案件名", key: "case_name" },
@@ -53,6 +34,25 @@ const headers: DataTableHeaders = [
   { title: "ステータス", key: "status_name" },
   { title: "削除", key: "actions", sortable: false },
 ]
+
+const dialogDelete = ref<InstanceType<typeof DialogConfirm> | null>(null)
+function showDialogDelete(name: string) {
+  dialogDelete.value
+    ?.open("この案件情報を削除してもよろしいですか?")
+    .then(async (confirmed: boolean) => {
+      if (confirmed) {
+        try {
+          const index = desserts.value!.data.findIndex(
+            (v: any) => v.name === name,
+          )
+          desserts.value!.data.splice(index, 1)
+          Notify.success("削除しました")
+        } catch (e) {
+          Notify.error(e)
+        }
+      }
+    })
+}
 </script>
 
 <template>
@@ -75,7 +75,7 @@ const headers: DataTableHeaders = [
       </teleport>
     </client-only>
     <v-data-table :headers="headers" :items="desserts" :search="search">
-      <template #item>
+      <template #items>
         <v-defaults-provider
           :defaults="{
             VBtn: {
@@ -89,20 +89,19 @@ const headers: DataTableHeaders = [
               size: 20,
             },
           }"
-        >
-          <!-- <v-tooltip location="top">
-            <template #activator="{ props }">
-              <v-btn
-                icon="mdi-delete-outline"
-                v-bind="props"
-                @click.stop="showDialogDelete(item.name)"
-              />
-            </template>
-            <span>削除します</span>
-          </v-tooltip> -->
-        </v-defaults-provider>
+        />
+        <v-tooltip location="top">
+          <template #activator="{ props }">
+            <v-btn
+              icon="mdi-delete-outline"
+              v-bind="props"
+              @click.stop="showDialogDelete(item.name)"
+            />
+          </template>
+          <span>削除します</span>
+        </v-tooltip>
       </template>
     </v-data-table>
-    <!-- <DialogConfirm ref="dialogDelete" /> -->
+    <DialogConfirm ref="dialogDelete" />
   </v-card>
 </template>

@@ -122,10 +122,7 @@ const officeNames =
             >
             <v-divider />
             <v-card-text>
-              色や影、角などのスタイルは variant か props, color
-              で指定することで、 一括して自動で設定されます。class
-              で設定することも可能ですが、 指定内容によっては variant / props
-              の設定が優先されることがあります。
+              <ImageUpload />
             </v-card-text>
             <v-row justify="end" class="mr-4 mb-3">
               <v-col cols="auto">
@@ -202,6 +199,9 @@ const officeNames =
                   clearable
                 />
               </v-skeleton-loader>
+            </v-col> -->
+            <!-- <v-col>
+              <DatePicker />
             </v-col> -->
           </v-row>
           <v-row>

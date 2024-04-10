@@ -1,25 +1,25 @@
 <script setup lang="ts">
-import { mergeProps } from 'vue'
+import { mergeProps } from "vue"
 
 const theme = useTheme()
-const drawer = useState('drawer')
+const drawer = useState("drawer")
 const route = useRoute()
 const breadcrumbs = computed(() => {
   return route!.matched
     .filter(
       (item) =>
-        item.meta && item.meta.title && !(item.meta?.breadcrumb === 'hidden'),
+        item.meta && item.meta.title && !(item.meta?.breadcrumb === "hidden"),
     )
     .map((r) => ({
       title: r.meta.title!,
       disabled:
-        r.meta?.breadcrumb === 'disabled' || r.path === route.path || false,
+        r.meta?.breadcrumb === "disabled" || r.path === route.path || false,
       to: r.path,
     }))
 })
 const isDark = useDark({
   onChanged(dark: boolean) {
-    theme.global.name.value = dark ? 'dark' : 'light'
+    theme.global.name.value = dark ? "dark" : "light"
   },
 })
 const toggleDark = useToggle<true, false | null>(isDark)
@@ -47,15 +47,6 @@ const { loggedIn, clear, user } = useUserSession()
         />
       </div>
     </client-only>
-    <v-btn
-      icon
-      href="https://github.com/kingyue737/vitify-nuxt"
-      size="small"
-      class="ml-2"
-      target="_blank"
-    >
-      <v-icon size="30" icon="mdi-github" />
-    </v-btn>
     <v-menu location="bottom">
       <template #activator="{ props: menu }">
         <v-tooltip location="bottom">
@@ -67,7 +58,7 @@ const { loggedIn, clear, user } = useUserSession()
               </v-avatar>
             </v-btn>
           </template>
-          <span>{{ loggedIn ? user!.login : 'User' }}</span>
+          <span>{{ loggedIn ? user!.login : "User" }}</span>
         </v-tooltip>
       </template>
       <v-list>

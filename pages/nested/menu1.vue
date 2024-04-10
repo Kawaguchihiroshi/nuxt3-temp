@@ -105,6 +105,7 @@ const form = ref(null)
             label="登録に同意しますか？"
             required
           />
+          <ImageDrckDrop />
           <v-btn
             :disabled="!valid"
             color="success"
