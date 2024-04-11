@@ -165,7 +165,7 @@ const officeNames =
             </v-col>
           </v-row>
           <v-row>
-            <v-col max-width="500px">
+            <v-col cols="2">
               <div>officeNames：{{ officeNames }}</div>
               <v-skeleton-loader type="text">
                 <v-select
@@ -200,9 +200,9 @@ const officeNames =
                 />
               </v-skeleton-loader>
             </v-col> -->
-            <!-- <v-col>
+            <v-col cols="2">
               <DatePicker />
-            </v-col> -->
+            </v-col>
           </v-row>
           <v-row>
             <v-col cols="10" />

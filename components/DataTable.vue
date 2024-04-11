@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { DataTableHeaders } from "@/plugins/vuetify"
-import type { DialogConfirm } from "@/components/DialogConfirm.vue"
 
 interface DessertsData {
   case_id: string
@@ -17,7 +16,7 @@ interface DessertsData {
   created_at: number
   confirmation_at: number
 }
-const { data: desserts } = await useFetch<{
+const { pending, data: desserts } = await useFetch<{
   data: DessertsData[]
 }>("http://127.0.0.1:8000/ledger")
 
@@ -74,7 +73,8 @@ function showDialogDelete(name: string) {
         />
       </teleport>
     </client-only>
-    <v-data-table :headers="headers" :items="desserts" :search="search">
+    <v-data-table v-if="pending"> loading... </v-data-table>
+    <v-data-table v-else :headers="headers" :items="desserts" :search="search">
       <template #items>
         <v-defaults-provider
           :defaults="{

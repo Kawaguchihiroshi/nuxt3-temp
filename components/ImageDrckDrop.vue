@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { mdiCloudUpload } from "@mdi/js"
-import { withDefaults, defineProps } from "@nuxtjs/composition-api"
 interface Props {
   buttonTitle?: string
   buttonIcon?: string

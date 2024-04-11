@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const name = ref("")
+const count = useCounterStore()
 function sayHi() {
   Notify.success(`Hi, ${name.value}!`)
 }
@@ -26,6 +27,9 @@ definePageMeta({
         class="mx-auto mt-8"
       />
     </v-responsive>
+    count；{{ count.count }} userId；{{ count.userId }} count；{{
+      count.userToken
+    }}
     <v-btn :disabled="!name" class="mr-2" color="primary" @click="sayHi">
       認証する
     </v-btn>

@@ -2,7 +2,6 @@
 definePageMeta({
   title: "ユーザー新規登録",
   icon: "mdi-animation",
-  keepalive: true,
 })
 
 const handleSubmit = async () => {
@@ -105,7 +104,7 @@ const form = ref(null)
             label="登録に同意しますか？"
             required
           />
-          <ImageDrckDrop />
+          <!-- <ImageDrckDrop /> -->
           <v-btn
             :disabled="!valid"
             color="success"

@@ -13,7 +13,7 @@ const title = computed(() => {
 useHead({
   title,
   titleTemplate: (t) => (t ? `${t} | Vitify Admin` : "Vitify Admin"),
-  htmlAttrs: { lang: "en" },
+  htmlAttrs: { lang: "ja" },
   link: [{ rel: "icon", href: "/favicon.ico" }],
 })
 useSeoMeta({
