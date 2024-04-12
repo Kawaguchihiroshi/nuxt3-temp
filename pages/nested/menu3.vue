@@ -1,9 +1,7 @@
 <script setup lang="ts">
 definePageMeta({
-  title: "ユーザー関連",
+  title: "Menu 2",
   icon: "mdi-view-list",
-  drawerIndex: 2,
-  breadcrumb: "disabled",
 })
 </script>
 <template>

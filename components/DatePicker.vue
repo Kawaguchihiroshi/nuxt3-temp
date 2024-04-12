@@ -3,7 +3,7 @@ const carendaer = ref()
 </script>
 
 <template>
-  <v-date-picker-month v-model="carendaer" />
+  <v-date-picker v-model="carendaer" />
   <p>
     Date in ISO format: <strong>{{ carendaer }}</strong>
   </p>
