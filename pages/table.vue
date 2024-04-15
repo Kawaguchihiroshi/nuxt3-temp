@@ -39,6 +39,7 @@ const { data: handles } = await useFetch<{
 }>("http://127.0.0.1:8000/handle")
 
 const search = ref("")
+const date = ref("20231223")
 
 const switch1 = ref(true)
 const selectedOffice = ref("お選びください")
@@ -186,6 +187,7 @@ watch(selectedDepartment, (newVal: string, oldVal: string) => {
           </v-row>
           <v-row>
             <v-col> 社員絞り込み </v-col>
+            <v-col><Dialogs /></v-col>
           </v-row>
           <v-row>
             <v-col cols="2">
@@ -226,7 +228,8 @@ watch(selectedDepartment, (newVal: string, oldVal: string) => {
               <div>selectedDepartment：{{ selectedDepartment }}</div>
             </v-col>
             <v-col cols="2">
-              <DatePicker />
+              <DatePicker v-model="date" label="日付項目" />
+              <div>date : {{ date }}</div>
             </v-col>
           </v-row>
           <v-row>

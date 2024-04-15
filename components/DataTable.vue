@@ -25,7 +25,11 @@ interface DessertsData {
   created_at: number
   confirmation_at: number
 }
-const { pending, data: desserts } = await useFetch<{
+const {
+  pending,
+  data: desserts,
+  error,
+} = await useFetch<{
   data: DessertsData[]
 }>("http://127.0.0.1:8000/ledger")
 Object.freeze({ pending, data: desserts })
@@ -46,8 +50,22 @@ const headers: DataTableHeaders = [
 <template>
   <v-card class="mt-3">
     <div>{{ search }}</div>
-    <div>{{ selected }}</div>
-    <v-data-table v-if="pending"> loading... </v-data-table>
+    <div v-if="selected[0] !== undefined">{{ selected }}</div>
+    <!-- APIを読み込んでいる間の処理 -->
+    <v-data-table
+      v-if="pending"
+      class="pt-4 pl-4"
+      items-per-page-text="表示行数"
+    >
+      loading...
+    </v-data-table>
+
+    <!-- APIの読み込みが失敗した場合のエラー処理 -->
+    <v-data-table v-else-if="error" items-per-page-text="表示行数">
+      <div class="pa-4">API not found</div>
+    </v-data-table>
+
+    <!-- APIを読み込んで表示する通常処理 -->
     <v-data-table
       v-else
       :headers="headers"
