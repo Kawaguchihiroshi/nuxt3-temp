@@ -1,12 +1,13 @@
 <script setup lang="ts">
+const mdiCloudUpload = ref("")
 interface Props {
   buttonTitle?: string
   buttonIcon?: string
   accept?: string
 }
 const props = withDefaults(defineProps<Props>(), {
-  buttonTitle: "ファイルを選択",
   buttonIcon: mdiCloudUpload,
+  buttonTitle: "ファイルを選択",
   accept: "image/*",
 })
 
@@ -14,7 +15,6 @@ interface Emits {
   (e: "update:File", value: File): void
 }
 const emits = defineEmits<Emits>()
-const mdiCloudUpload = ref()
 const isSelecting = ref<boolean>(false)
 const isDragged = ref<boolean>(false)
 const selectedFile = ref<File | null>(null)

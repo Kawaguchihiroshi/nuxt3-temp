@@ -29,9 +29,7 @@ const {
   pending,
   data: desserts,
   error,
-} = await useFetch<{
-  data: DessertsData[]
-}>("http://127.0.0.1:8000/ledger")
+} = await useFetch<{ data: DessertsData[] }>("http://127.0.0.1:8000/ledger")
 
 const headers: DataTableHeaders = [
   { title: "■", sortable: false, key: "checks" },
