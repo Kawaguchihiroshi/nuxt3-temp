@@ -32,7 +32,6 @@ const {
 } = await useFetch<{
   data: DessertsData[]
 }>("http://127.0.0.1:8000/ledger")
-Object.freeze({ pending, data: desserts })
 
 const headers: DataTableHeaders = [
   { title: "■", sortable: false, key: "checks" },

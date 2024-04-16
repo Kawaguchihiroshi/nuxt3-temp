@@ -1,18 +1,16 @@
 <script setup lang="ts">
-import { ref, unref } from "vue"
-
 const props = defineProps(["modelValue", "label"])
 const emits = defineEmits(["update:modelValue"])
 const rules = {
-  required: (value) => !!value || value === 0 || "必須項目です",
-  dateformat: (value) => {
+  required: (value: any) => !!value || value === 0 || "必須項目です",
+  dateformat: (value: any) => {
     return dateRule.test(value) || pattern + "形式で入力してください"
   },
 }
 const pattern = "yyyymmdd"
 const dateRule = /^[0-9]{4}(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01])$/
 const maxlength = 8
-const toDateFormat = (v) => {
+const toDateFormat = (v: any) => {
   if (!dateRule.test(v)) {
     return v
   }
@@ -23,7 +21,7 @@ const isEdit = ref(false)
 const editValue = ref(unref(props.modelValue))
 const dispValue = ref(unref(props.modelValue))
 
-function toHalfNumString(str) {
+function toHalfNumString(str: any) {
   if (typeof str === "string" || str instanceof String) {
     // 全角英数字を半角に変換
     str = str.replace(/[０-９]/g, function (s) {
@@ -62,12 +60,12 @@ format()
     <v-text-field
       class="bg-purple-lighten-5"
       :autofocus="isEdit"
-      :label="label + '_edit'"
+      :label="label"
       :model-value="editValue"
-      @update:model-value="editValue = $event"
-      :rules="[rules.required, rules.dateformat]"
-      @blur="format()"
       :maxlength="maxlength"
+      :rules="[rules.required, rules.dateformat]"
+      @update:model-value="editValue = $event"
+      @blur="format()"
     />
   </template>
   <template v-else>

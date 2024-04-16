@@ -14,7 +14,7 @@ interface Emits {
   (e: "update:File", value: File): void
 }
 const emits = defineEmits<Emits>()
-
+const mdiCloudUpload = ref()
 const isSelecting = ref<boolean>(false)
 const isDragged = ref<boolean>(false)
 const selectedFile = ref<File | null>(null)
@@ -78,7 +78,6 @@ const onFileDropped = (e: DragEvent) => {
     height="100%"
     color="info"
     class="text-none"
-    :variant="!isDragged ? 'contained' : 'outlined'"
     depressed
     @dragover.prevent="isDragged = true"
     @dragleave.prevent="isDragged = false"
