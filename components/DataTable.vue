@@ -32,16 +32,16 @@ const {
 } = await useFetch<{ data: DessertsData[] }>("http://127.0.0.1:8000/ledger")
 
 const headers: DataTableHeaders = [
-  { title: "■", sortable: false, key: "checks" },
+  { title: "", sortable: false, key: "checks" },
   { title: "案件番号", key: "case_id" },
   { title: "案件名", key: "case_name" },
-  { title: "営業所名", key: "office_name" },
-  { title: "部署名", key: "department_name" },
-  { title: "担当者名", key: "handle_name" },
-  { title: "登録日", key: "created_at" },
-  { title: "確認日", key: "confirmation_at" },
-  { title: "ステータス", key: "status_name" },
-  { title: "削除", sortable: false, key: "actions" },
+  { title: "営業所名", key: "office_name", align: "center" },
+  { title: "部署名", key: "department_name", align: "center" },
+  { title: "担当者名", key: "handle_name", align: "center" },
+  { title: "登録日", key: "created_at", align: "center" },
+  { title: "確認日", key: "confirmation_at", align: "center" },
+  { title: "ステータス", key: "status_name", align: "center" },
+  { title: "削除", sortable: false, key: "actions", align: "center" },
 ]
 </script>
 <template>
@@ -72,11 +72,16 @@ const headers: DataTableHeaders = [
       items-per-page-text="表示行数"
     >
       <template #item.checks="{ item }">
-        <v-checkbox v-model="selected" size="small" :value="item.case_id" />
+        <v-checkbox v-model="selected" :value="item.case_id" />
       </template>
       <template #item.actions="{ item }">
-        <v-btn size="small"> {{ item.case_id }} </v-btn>
+        <Dialogs :id="item.case_id" />
       </template>
     </v-data-table>
   </v-card>
 </template>
+<style scoped>
+.v-input__details {
+  grid-area: messages;
+}
+</style>

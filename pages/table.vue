@@ -187,7 +187,6 @@ watch(selectedDepartment, (newVal: string, oldVal: string) => {
           </v-row>
           <v-row>
             <v-col> 社員絞り込み </v-col>
-            <v-col><Dialogs /></v-col>
           </v-row>
           <v-row>
             <v-col cols="2">
