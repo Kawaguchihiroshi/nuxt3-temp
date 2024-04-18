@@ -1,6 +1,6 @@
 <script setup lang="ts">
 definePageMeta({
-  title: "Menu 2",
+  title: "作ってみた",
   icon: "mdi-view-list",
 })
 </script>
