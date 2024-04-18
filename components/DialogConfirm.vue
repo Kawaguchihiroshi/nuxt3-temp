@@ -2,8 +2,8 @@
 const dialog = ref(false)
 const confirmed = ref(false)
 let resolve: (value: boolean) => void
-const message = ref('')
-watch(dialog, (v) => {
+const message = ref()
+watch(dialog, (v: any) => {
   if (!v) {
     resolve(confirmed.value)
   }
@@ -36,8 +36,8 @@ defineExpose({ open })
       </v-card-text>
       <v-card-actions>
         <v-spacer />
-        <v-btn color="primary" @click="cancel"> Cancel </v-btn>
-        <v-btn color="primary" @click="confirm"> Confirm </v-btn>
+        <v-btn color="primary" @click="cancel"> キャンセル </v-btn>
+        <v-btn color="primary" @click="confirm"> 実行する </v-btn>
         <v-spacer />
       </v-card-actions>
     </v-card>

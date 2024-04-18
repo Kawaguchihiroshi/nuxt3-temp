@@ -1,8 +1,9 @@
 <script setup lang="ts">
 definePageMeta({
-  redirect: "homepage",
+  title: "Menu 2",
+  icon: "mdi-view-list",
 })
 </script>
 <template>
-  <div />
+  <NuxtPage />
 </template>

@@ -1,40 +1,18 @@
 <script setup lang="ts">
-import DialogConfirm from '~/components/DialogConfirm.vue'
-import type { DataTableHeaders } from '~/plugins/vuetify'
-
 definePageMeta({
-  icon: 'mdi-table',
-  title: 'データテイブル',
+  icon: "mdi-table",
+  title: "データテイブル",
   drawerIndex: 3,
 })
-
-const { data: desserts01 } = await useFetch('http://127.0.0.1:8000/ledger')
-const search = ref('')
-
-const dialogDelete = ref<InstanceType<typeof DialogConfirm> | null>(null)
-function showDialogDelete(name: string) {
-  dialogDelete.value
-    ?.open('この案件情報を削除してもよろしいですか?')
-    .then(async (confirmed: boolean) => {
-      if (confirmed) {
-        try {
-          const index = desserts01.value!.findIndex((v: any) => v.name === name)
-          desserts01.value!.splice(index, 1)
-          Notify.success('削除しました')
-        } catch (e) {
-          Notify.error(e)
-        }
-      }
-    })
-}
 
 interface OfficeData {
   office_id: string
   office_name: string
 }
-const { data: offices } = await useFetch<{ data: OfficeData[] }>(
-  'http://127.0.0.1:8000/office',
-)
+const { data: offices } = await useFetch<{
+  map: any
+  data: OfficeData[]
+}>("http://127.0.0.1:8000/office")
 
 interface DepartmentData {
   office_id: string
@@ -42,9 +20,10 @@ interface DepartmentData {
   department_id: string
   department_name: string
 }
-const { data: departments } = await useFetch<{ data: DepartmentData[] }>(
-  'http://127.0.0.1:8000/department',
-)
+const { data: departments } = await useFetch<{
+  map: any
+  data: DepartmentData[]
+}>("http://127.0.0.1:8000/department")
 
 interface HandleData {
   office_id: string
@@ -54,21 +33,30 @@ interface HandleData {
   handle_id: string
   handle_name: string
 }
-const { data: handles } = await useFetch<{ data: HandleData[] }>(
-  'http://127.0.0.1:8000/department',
-)
+const { data: handles } = await useFetch<{
+  map: any
+  data: HandleData[]
+}>("http://127.0.0.1:8000/handle")
 
-const selectedOffice = ref('お選びください')
-const selectedDepartment = ref('お選びください')
-const selectedHandle = ref('お選びください')
+const search = ref("")
+const date = ref("20231223")
 
-const officeNames = offices.value.map((office: any) => office.office_name)
+const switch1 = ref(true)
+const selectedOffice = ref("お選びください")
+const selectedDepartment = ref("お選びください")
+const selectedHandle = ref("お選びください")
+
+const officeNames =
+  offices.value !== null
+    ? offices.value.map((data: OfficeData) => data.office_name)
+    : []
 
 const departmentsNames = ref<string[]>([])
 watch(selectedOffice, (newVal: string, oldVal: string) => {
-  if (oldVal) {
-    const departmentsArray: DepartmentData[] = Object.values(departments.value)
-    const filteredDepartments: DepartmentData[] = departmentsArray.filter(
+  if (newVal !== oldVal) {
+    const departmentsArray: any = Object.values(departments)
+    console.log("b", departmentsArray)
+    const filteredDepartments: DepartmentData[] = departmentsArray[3].filter(
       (department: DepartmentData) => department.office_name === newVal,
     )
     departmentsNames.value = filteredDepartments.map(
@@ -79,28 +67,18 @@ watch(selectedOffice, (newVal: string, oldVal: string) => {
 
 const handlesNames = ref<string[]>([])
 watch(selectedDepartment, (newVal: string, oldVal: string) => {
-  if (oldVal) {
-    const handlesArray: HandleData[] = Object.values(handles.value)
-    const filteredhandles: HandleData[] = handlesArray.filter(
-      (handle: HandleData) => handle.office_name === newVal,
+  if (newVal !== oldVal) {
+    const handlesArray: any = Object.values(handles)
+    const filteredhandles: HandleData[] = handlesArray[3].filter(
+      (handle: HandleData) =>
+        handle.department_name === newVal &&
+        handle.office_name === selectedOffice.value,
     )
     handlesNames.value = filteredhandles.map(
       (handle: HandleData) => handle.handle_name,
     )
   }
 })
-
-const headers: DataTableHeaders = [
-  { title: 'チェック', key: 'name', sortable: false },
-  { title: '案件名', key: 'case_name' },
-  { title: '営業所名', key: 'office_name' },
-  { title: '部署名', key: 'department_name' },
-  { title: '担当者名', key: 'handle_name' },
-  { title: '登録日', key: 'created_at' },
-  { title: '確認日', key: 'confirmation_at' },
-  { title: 'ステータス', key: 'status_name' },
-  { title: '削除', key: 'actions', sortable: false },
-]
 </script>
 
 <template>
@@ -114,12 +92,24 @@ const headers: DataTableHeaders = [
               >お仕着せのスタイル付き v-sheet と考えればOK</v-card-subtitle
             >
             <v-divider />
-            <v-card-text>
-              色や影、角などのスタイルは variant か props, color
-              で指定することで、 一括して自動で設定されます。class
-              で設定することも可能ですが、 指定内容によっては variant / props
-              の設定が優先されることがあります。
-            </v-card-text>
+            <v-card-text>{{ offices }} </v-card-text>
+            <v-row justify="end" class="mr-4 mb-3">
+              <v-col cols="auto">
+                <v-btn color="primary">確認する</v-btn>
+              </v-col>
+            </v-row>
+          </v-card>
+        </v-skeleton-loader>
+      </v-col>
+      <v-col>
+        <v-skeleton-loader type="card">
+          <v-card color="black" class="bg-white" max-width="500px">
+            <v-card-title>本日追加された確認書の枚数</v-card-title>
+            <v-card-subtitle
+              >お仕着せのスタイル付き v-sheet と考えればOK</v-card-subtitle
+            >
+            <v-divider />
+            <v-card-text> {{ departments }} </v-card-text>
             <v-row justify="end" class="mr-4 mb-3">
               <v-col cols="auto">
                 <v-btn color="primary">確認する</v-btn>
@@ -137,10 +127,7 @@ const headers: DataTableHeaders = [
             >
             <v-divider />
             <v-card-text>
-              色や影、角などのスタイルは variant か props, color
-              で指定することで、 一括して自動で設定されます。class
-              で設定することも可能ですが、 指定内容によっては variant / props
-              の設定が優先されることがあります。
+              <ImageUpload />
             </v-card-text>
             <v-row justify="end" class="mr-4 mb-3">
               <v-col cols="auto">
@@ -158,34 +145,7 @@ const headers: DataTableHeaders = [
               >お仕着せのスタイル付き v-sheet と考えればOK</v-card-subtitle
             >
             <v-divider />
-            <v-card-text>
-              色や影、角などのスタイルは variant か props, color
-              で指定することで、 一括して自動で設定されます。class
-              で設定することも可能ですが、 指定内容によっては variant / props
-              の設定が優先されることがあります。
-            </v-card-text>
-            <v-row justify="end" class="mr-4 mb-3">
-              <v-col cols="auto">
-                <v-btn color="primary">確認する</v-btn>
-              </v-col>
-            </v-row>
-          </v-card>
-        </v-skeleton-loader>
-      </v-col>
-      <v-col>
-        <v-skeleton-loader type="card">
-          <v-card color="black" class="bg-white" max-width="500px">
-            <v-card-title>本日追加された確認書の枚数</v-card-title>
-            <v-card-subtitle
-              >お仕着せのスタイル付き v-sheet と考えればOK</v-card-subtitle
-            >
-            <v-divider />
-            <v-card-text>
-              色や影、角などのスタイルは variant か props, color
-              で指定することで、 一括して自動で設定されます。class
-              で設定することも可能ですが、 指定内容によっては variant / props
-              の設定が優先されることがあります。
-            </v-card-text>
+            <v-card-text> {{ handles }} </v-card-text>
             <v-row justify="end" class="mr-4 mb-3">
               <v-col cols="auto">
                 <v-btn color="primary">確認する</v-btn>
@@ -203,147 +163,56 @@ const headers: DataTableHeaders = [
           </v-row>
           <v-row class="py-0">
             <v-col max-width="500px">
-              <v-text-field clearable label="フリーワード" />
+              <client-only>
+                <v-text-field
+                  v-model="search"
+                  clearable
+                  prepend-inner-icon="mdi-magnify"
+                  label="フリーワード"
+                  single-line
+                  hide-details
+                  density="compact"
+                  class="mr-2"
+                  rounded="xl"
+                  flat
+                  variant="solo"
+                  style="width: 250px"
+                />
+              </client-only>
+              <div>{{ search }}</div>
             </v-col>
             <v-col max-width="500px">
-              <v-checkbox label="自分が担当した案件" :model-value="false" />
+              <v-switch v-model="switch1" inset label="自分が担当した案件" />
             </v-col>
           </v-row>
           <v-row>
-            <v-col cols="1">
-              <v-checkbox label="Jacob" :model-value="true" />
-            </v-col>
-            <v-col cols="1">
-              <v-checkbox label="Jacob" :model-value="false" />
-            </v-col>
-            <v-col cols="1">
-              <v-checkbox label="Jacob" disabled />
-            </v-col>
-            <v-col cols="1">
-              <v-checkbox label="Jacob" :model-value="false" disabled />
-            </v-col>
-
-            <v-col cols="12" sm="6" md="4">
-              <v-menu
-                ref="menu"
-                v-model="menu"
-                :close-on-content-click="false"
-                :return-value.sync="date"
-                transition="scale-transition"
-                offset-y
-                min-width="auto"
-              >
-                <template v-slot:activator="{ on, attrs }">
-                  <v-text-field
-                    v-model="date"
-                    label="Picker in menu"
-                    prepend-icon="mdi-calendar"
-                    readonly
-                    v-bind="attrs"
-                    v-on="on"
-                  />
-                </template>
-                <v-date-picker v-model="date" no-title scrollable>
-                  <v-spacer></v-spacer>
-                  <v-btn text color="primary" @click="menu = false">
-                    Cancel
-                  </v-btn>
-                  <v-btn text color="primary" @click="$refs.menu.save(date)">
-                    OK
-                  </v-btn>
-                </v-date-picker>
-              </v-menu>
-            </v-col>
-            <v-spacer></v-spacer>
-            <v-col cols="12" sm="6" md="4">
-              <v-dialog
-                ref="dialog"
-                v-model="modal"
-                :return-value.sync="date"
-                persistent
-                width="290px"
-              >
-                <template v-slot:activator="{ on, attrs }">
-                  <v-text-field
-                    v-model="date"
-                    label="Picker in dialog"
-                    prepend-icon="mdi-calendar"
-                    readonly
-                    v-bind="attrs"
-                    v-on="on"
-                  />
-                </template>
-                <v-date-picker v-model="date" scrollable>
-                  <v-spacer></v-spacer>
-                  <v-btn text color="primary" @click="modal = false">
-                    Cancel
-                  </v-btn>
-                  <v-btn text color="primary" @click="$refs.dialog.save(date)">
-                    OK
-                  </v-btn>
-                </v-date-picker>
-              </v-dialog>
-            </v-col>
-            <v-col cols="12" sm="6" md="4">
-              <v-menu
-                v-model="menu2"
-                :close-on-content-click="false"
-                :nudge-right="40"
-                transition="scale-transition"
-                offset-y
-                min-width="auto"
-              >
-                <template v-slot:activator="{ on, attrs }">
-                  <v-text-field
-                    v-model="date"
-                    label="Picker without buttons"
-                    prepend-icon="mdi-calendar"
-                    readonly
-                    v-bind="attrs"
-                    v-on="on"
-                  />
-                </template>
-                <v-date-picker v-model="date" @input="menu2 = false" />
-              </v-menu>
-            </v-col>
-
-            <v-col>
-              <v-file-input
-                label="File input"
-                filled
-                prepend-icon="mdi-camera"
-              />
-            </v-col>
+            <v-col> 社員絞り込み </v-col>
           </v-row>
           <v-row>
-            <v-col max-width="500px">
-              <div>selectedOffice：{{ selectedOffice }}</div>
+            <v-col cols="2">
               <v-skeleton-loader type="text">
                 <v-select
                   v-model="selectedOffice"
                   label="営業所名"
                   :items="officeNames"
-                  item-text="office_name"
-                  item-value="office_id"
                   clearable
                 />
               </v-skeleton-loader>
+              <div>officeNames：{{ officeNames }}</div>
             </v-col>
-            <v-col max-width="500px">
-              <div>departmentsNames：{{ departmentsNames }}</div>
+            <v-col cols="2">
               <v-skeleton-loader type="text">
                 <v-select
                   v-model="selectedDepartment"
                   label="部署名"
                   :items="departmentsNames"
-                  item-text="department_name"
-                  item-value="department_id"
                   clearable
                 />
               </v-skeleton-loader>
+              <div>departmentsNames：{{ departmentsNames }}</div>
+              <div>selectedOffice：{{ selectedOffice }}</div>
             </v-col>
-            <v-col max-width="500px">
-              <div>handlesNames：{{ handlesNames }}</div>
+            <v-col cols="2">
               <v-skeleton-loader type="text">
                 <v-select
                   v-model="selectedHandle"
@@ -354,6 +223,12 @@ const headers: DataTableHeaders = [
                   clearable
                 />
               </v-skeleton-loader>
+              <div>handlesNames：{{ handlesNames }}</div>
+              <div>selectedDepartment：{{ selectedDepartment }}</div>
+            </v-col>
+            <v-col cols="2">
+              <DatePicker v-model="date" label="日付項目" />
+              <div>date : {{ date }}</div>
             </v-col>
           </v-row>
           <v-row>
@@ -366,60 +241,7 @@ const headers: DataTableHeaders = [
             </v-col>
           </v-row>
         </v-card>
-        <v-card class="mt-3">
-          <client-only>
-            <teleport to="#app-bar">
-              <v-text-field
-                v-model="search"
-                prepend-inner-icon="mdi-magnify"
-                label="Search"
-                single-line
-                hide-details
-                density="compact"
-                class="mr-2"
-                rounded="xl"
-                flat
-                variant="solo"
-                style="width: 250px"
-              />
-            </teleport>
-          </client-only>
-          <v-data-table
-            :headers="headers"
-            :items="desserts01"
-            item-value="name"
-            :search="search"
-          >
-            <template #item.actions="{ item }">
-              <v-defaults-provider
-                :defaults="{
-                  VBtn: {
-                    size: 20,
-                    rounded: 'sm',
-                    variant: 'text',
-                    class: 'ml-1',
-                    color: '',
-                  },
-                  VIcon: {
-                    size: 20,
-                  },
-                }"
-              >
-                <v-tooltip location="top">
-                  <template #activator="{ props }">
-                    <v-btn
-                      icon="mdi-delete-outline"
-                      v-bind="props"
-                      @click.stop="showDialogDelete(item.name)"
-                    />
-                  </template>
-                  <span>削除します</span>
-                </v-tooltip>
-              </v-defaults-provider>
-            </template>
-          </v-data-table>
-          <DialogConfirm ref="dialogDelete" />
-        </v-card>
+        <DataTable :search="search" />
       </v-col>
     </v-row>
   </v-container>

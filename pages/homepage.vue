@@ -1,5 +1,6 @@
 <script setup lang="ts">
-const name = ref('')
+const name = ref("")
+const count = useCounterStore()
 function sayHi() {
   Notify.success(`Hi, ${name.value}!`)
 }
@@ -7,8 +8,8 @@ function warning() {
   Notify.warning(`How dare you refuse me, ${name.value}.`)
 }
 definePageMeta({
-  icon: 'mdi-home',
-  title: 'Homepage',
+  icon: "mdi-home",
+  title: "ホーム",
   drawerIndex: 0,
 })
 </script>
@@ -26,10 +27,13 @@ definePageMeta({
         class="mx-auto mt-8"
       />
     </v-responsive>
+    count；{{ count.count }} userId；{{ count.userId }} count；{{
+      count.userToken
+    }}
     <v-btn :disabled="!name" class="mr-2" color="primary" @click="sayHi">
-      Confirm
+      認証する
     </v-btn>
-    <v-btn :disabled="!name" @click="warning"> Cancel </v-btn>
+    <v-btn :disabled="!name" @click="warning">キャンセル</v-btn>
   </div>
 </template>
 

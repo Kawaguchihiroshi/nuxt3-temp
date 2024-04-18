@@ -1,9 +1,9 @@
 <script setup lang="ts">
 definePageMeta({
-  title: 'ネストのルーター',
-  icon: 'mdi-view-list',
+  title: "ユーザー関連",
+  icon: "mdi-view-list",
   drawerIndex: 2,
-  breadcrumb: 'disabled',
+  breadcrumb: "disabled",
 })
 </script>
 <template>
