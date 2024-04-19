@@ -27,13 +27,20 @@ definePageMeta({
         class="mx-auto mt-8"
       />
     </v-responsive>
-    count；{{ count.count }} userId；{{ count.userId }} count；{{
-      count.userToken
-    }}
-    <v-btn :disabled="!name" class="mr-2" color="primary" @click="sayHi">
-      認証する
-    </v-btn>
-    <v-btn :disabled="!name" @click="warning">キャンセル</v-btn>
+    <v-row justify="center">
+      「見られたくない」ページはミドルウェアでこのページにリダイレクトさせています。
+    </v-row>
+    <v-row justify="center">
+      count；{{ count.count }} userId；{{ count.userId }} count；{{
+        count.userToken
+      }}
+    </v-row>
+    <v-row justify="center">
+      <v-btn :disabled="!name" class="mr-2" color="primary" @click="sayHi">
+        認証する
+      </v-btn>
+      <v-btn :disabled="!name" @click="warning">キャンセル</v-btn>
+    </v-row>
   </div>
 </template>
 

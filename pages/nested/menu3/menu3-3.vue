@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useTodoState } from "~/composables/useTodoState"
 definePageMeta({
-  title: "ToDoアプリ2",
+  title: "ToDoアプリ3",
   icon: "mdi-animation",
 })
 const valid = ref(true)
@@ -30,7 +30,7 @@ function clearTask() {
         <v-col><h1>ToDoアプリ</h1></v-col>
       </v-row>
       <v-row>
-        <v-col><h2>useStateによるタスク内容の管理</h2></v-col>
+        <v-col><h2>piniaによるタスク内容の管理</h2></v-col>
       </v-row>
       <v-row class="mt-4 pl-4">
         <v-form

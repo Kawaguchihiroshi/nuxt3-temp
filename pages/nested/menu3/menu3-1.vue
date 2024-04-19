@@ -30,6 +30,9 @@ function clearTask() {
       <v-row>
         <v-col><h1>ToDoアプリ</h1></v-col>
       </v-row>
+      <v-row>
+        <v-col><h2>useCookieによるタスク内容の管理</h2></v-col>
+      </v-row>
       <v-row class="mt-4 pl-4">
         <v-form
           ref="form"

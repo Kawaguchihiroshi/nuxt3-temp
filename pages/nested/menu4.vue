@@ -1,6 +1,7 @@
 <script setup lang="ts">
 definePageMeta({
-  title: "Menu 2",
+  middleware: ["redirect"],
+  title: "見られたくない",
   icon: "mdi-view-list",
 })
 </script>
