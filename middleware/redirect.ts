@@ -1,3 +1,5 @@
 export default defineNuxtRouteMiddleware(async (to, from) => {
-  return navigateTo("/homepage")
+  if (to !== from) {
+    return navigateTo("/homepage")
+  }
 })

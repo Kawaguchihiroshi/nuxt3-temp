@@ -28,6 +28,7 @@ export default defineNuxtConfig({
     "nuxt-auth-utils",
     "@nuxt/eslint",
     "@nuxt/test-utils/module",
+    "@pinia-plugin-persistedstate/nuxt",
   ],
   css: ["~/assets/styles/index.css"],
   experimental: { typedPages: true },
